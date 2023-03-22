@@ -1,8 +1,10 @@
 {
-  "name": "alert-service",
-  "private": true,
+  "name": "@41t/notification",
   "version": "0.0.0",
   "type": "module",
+  "repository": "https://github.com/Ishi-Inanis/notification.git",
+  "author": "Ishi Inanis <ishi.inanis@gmail.com>",
+  "license": "MIT",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
