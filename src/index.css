@@ -1,0 +1,48 @@
+.notificationContainer {
+    --unit: 10px;
+    --animation-duration: 300ms;
+    --animation-easing: ease-out;
+    --z-index: 10;
+
+    position: fixed;
+    z-index: var(--z-index);
+    right: calc(var(--unit) * 2);
+    bottom: calc(var(--unit));
+
+    display: flex;
+    overflow: visible;
+    align-items: flex-end;
+    flex-direction: column;
+}
+
+.notification {
+    position: relative;
+
+    z-index: var(--z-index);
+    transition:
+            transform var(--animation-duration) var(--animation-easing),
+            margin-bottom var(--animation-duration) var(--animation-easing),
+            opacity, var(--animation-duration) var(--animation-easing);
+}
+
+.animationOpen {
+    animation-name: show;
+    animation-duration: var(--animation-duration);
+}
+
+.animationClosing {
+    z-index: calc(var(--z-index) - 5);
+    opacity: 0;
+}
+
+@keyframes show {
+    from {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
