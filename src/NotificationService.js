@@ -1,4 +1,4 @@
-class NotificationService {
+export default class NotificationService {
   static allServices = new Set()
 
   types = {
@@ -67,15 +67,14 @@ class NotificationService {
   }
 
   add(notification) {
-    const container = document.getElementById('container'),
-        button = document.createElement('button');
+    const button = document.createElement('button');
 
     button.id = `notification-${NotificationService.allServices.size}-${notification.id}`;
     button.classList.add('notification', 'notificationInContainer', 'animationOpen');
     button.innerHTML = `<span class="caption">${notification.message}</span>`;
     button.addEventListener('click', notification.close.bind(notification));
 
-    container.insertAdjacentElement('afterbegin', button);
+    this.container.insertAdjacentElement('afterbegin', button);
 
     return button;
   }
