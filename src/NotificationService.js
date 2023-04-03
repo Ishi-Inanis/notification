@@ -1,3 +1,6 @@
+import { Notification } from './Notification.js';
+import { NotificationView } from './NotificationView.js';
+
 export default class NotificationService {
   static allServices = new Set()
 
@@ -10,29 +13,11 @@ export default class NotificationService {
   }
 
   collection = new Map()
-  lastKey = 0
+  view = new NotificationView(this);
   MSG_TIMEOUT = 5000
   MSG_LONG_TIMEOUT = 30000
 
-  Notification = class {
-    constructor(service, message, type = service.types.MESSAGE, timeout = service.MSG_TIMEOUT) {
-      service.lastId = Date.now();
-
-      this.service = service;
-      this.id = service.lastId;
-      this.message = message;
-      this.type = type;
-      this.element = service.add(this);
-
-      setTimeout(() => this.close(), timeout);
-    }
-
-    close() {
-      this.service.startCloseAnimation(this.element);
-    }
-  }
-
-  constructor(id) {
+  constructor(id, view) {
     NotificationService.allServices.add(this);
 
     this.container = document.getElementById(id);
@@ -41,7 +26,7 @@ export default class NotificationService {
 
   _log(message, type) {
     if (message) {
-      const notification = new this.Notification(this, message, type);
+      const notification = new Notification(this, message, type);
       this.collection.set(notification.id, notification);
     }
   }
@@ -67,38 +52,10 @@ export default class NotificationService {
   }
 
   add(notification) {
-    const button = document.createElement('button');
+    let element = this.view.getElement(notification) ?? this.view[`get${notification.type[0].toUpperCase() + notification.type.slice(1)}`](notification);
 
-    button.id = `notification-${NotificationService.allServices.size}-${notification.id}`;
-    button.classList.add('notification', 'notificationInContainer', 'animationOpen');
-    button.innerHTML = `<span class="caption">${notification.message}</span>`;
-    button.addEventListener('click', notification.close.bind(notification));
+    this.container.insertAdjacentElement('afterbegin', element);
 
-    this.container.insertAdjacentElement('afterbegin', button);
-
-    return button;
-  }
-
-  startCloseAnimation(node) {
-    const height = node.getBoundingClientRect().height;
-
-    new Promise(resolve => {
-      node.style.marginBottom = `${-height}px`;
-      node.classList.add('animationClosing');
-
-      setTimeout(() => {
-        resolve();
-      }, 300);
-    }).then(() => {
-      node.remove();
-    });
-  }
-
-  removeLastNotification = () => {
-    this.collection.get(this.lastKey).close();
-    this.collection.delete(this.lastKey);
-  }
-  showMessage = () => {
-    // this.lastKey = notification.message('This is just a message', MSG_TIMEOUT);
+    return element;
   }
 }

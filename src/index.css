@@ -1,4 +1,4 @@
-.notificationContainer {
+/*.notificationContainer {
     --unit: 10px;
     --animation-duration: 300ms;
     --animation-easing: ease-out;
@@ -19,19 +19,18 @@
     position: relative;
 
     z-index: var(--z-index);
-    transition:
-            transform var(--animation-duration) var(--animation-easing),
-            margin-bottom var(--animation-duration) var(--animation-easing),
-            opacity, var(--animation-duration) var(--animation-easing);
-}
+    transition: transform var(--animation-duration) var(--animation-easing),
+    margin-bottom var(--animation-duration) var(--animation-easing),
+    opacity, var(--animation-duration) var(--animation-easing);
+}*/
 
 .animationOpen {
     animation-name: show;
-    animation-duration: var(--animation-duration);
+    animation-duration: .3s;
 }
 
 .animationClosing {
-    z-index: calc(var(--z-index) - 5);
+    z-index: 5;
     opacity: 0;
 }
 
